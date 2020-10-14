@@ -1,12 +1,18 @@
-const { Pool } = require("pg");
+const { Sequelize } = require("sequelize");
 
-// key-value definded in .env.sample
-const database = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
-});
+const db = new Sequelize(
+  "postgres://wkjhuhwf:sAGJOdHqG9zIvhgFiwV8NfRSpecMdcw4@rogue.db.elephantsql.com:5432/wkjhuhwf",
+  {
+    host: "localhost",
+    dialect: "postgres",
+    subQuery: false,
+    timestamps: false, //fixing the createdat updateat useless columns
+  }
+); // Example for postgres
 
-module.exports = database;
+// test db
+db.authenticate()
+  .then(() => console.log("Database Worki connected.."))
+  .catch((err) => console.log("Error: " + err));
+
+module.exports = db;

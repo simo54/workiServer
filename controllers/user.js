@@ -17,6 +17,7 @@ const controller = {
       middlename,
       age,
       email,
+      mobile,
       address,
       city,
       zip,

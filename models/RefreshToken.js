@@ -1,9 +1,16 @@
-const mongoose = require("mongoose");
+const Sequelize = require("sequelize");
+const db = require("../src/dbConfig");
 
-const RefreshTokenSchema = new mongoose.Schema({
-  tokenValue: String,
-  linkedJWT: String,
-  idUser: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-});
+const RefToken = db.define(
+  "sessions",
+  {
+    tokenvalue: Sequelize.DataTypes.STRING,
+    linkedjwt: Sequelize.DataTypes.STRING,
+  },
+  {
+    timestamps: false,
+    // modelName: "tokens",
+  }
+);
 
-module.exports = mongoose.model("RefreshToken", RefreshTokenSchema);
+module.exports = RefToken;

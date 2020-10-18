@@ -5,6 +5,12 @@ const RefToken = require("./RefreshToken");
 const User = db.define(
   "users",
   {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
     firstname: Sequelize.DataTypes.STRING,
     lastname: Sequelize.DataTypes.STRING,
     middlename: Sequelize.DataTypes.STRING,
@@ -22,6 +28,8 @@ const User = db.define(
   }
 );
 
-User.hasMany(RefToken, { foreignKey: "user_id" });
+User.associate = (models) => {
+  User.hasMany(RefToken);
+};
 
 module.exports = User;

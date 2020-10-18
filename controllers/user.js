@@ -1,9 +1,12 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const db = require("../src/dbConfig");
 
 const controller = {
   getUsers: async (req, res) => {
-    User.findAll()
+    User.findAll({
+      include: db.RefToken,
+    })
       .then((results) => {
         res.send(results);
         res.sendStatus(200);
@@ -26,6 +29,7 @@ const controller = {
     } = req.body;
     if (!firstname || !lastname || !email || !zip || !country || !password) {
       res.sendStatus(400);
+      console.log("something is wrong here");
       return;
     }
     try {
@@ -36,6 +40,7 @@ const controller = {
           middlename,
           age,
           email,
+          mobile,
           address,
           city,
           zip,

@@ -3,14 +3,16 @@ const Employer = require("../models/Employer");
 
 const controller = {
   getEmployer: async (req, res) => {
+    console.log("beginning of employer");
     Employer.findAll()
       .then((results) => {
         res.send(results);
-        res.sendStatus(200);
+        res.sendStatus(200)
       })
       .catch((err) => console.log(err));
   },
   createEmployer: async (req, res) => {
+    console.log("beginning of createEmployer");
     const {
       companyname,
       firstname,

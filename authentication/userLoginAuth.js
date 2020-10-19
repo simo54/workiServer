@@ -8,10 +8,12 @@ const RefToken = require("../models/RefreshToken");
 module.exports = async (req, res, next) => {
   // We get the email and the password from the login inputs
   const { email, password } = req.body;
+  console.log(email, password);
 
   // We check if email and password are correct
   if (!email || !password) {
     res.sendStatus(400);
+    console.log("problem is in checking email and password")
     return;
   }
 

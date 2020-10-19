@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const User = require("./User");
+const Employer = require("./Employer");
 
-const RefToken = db.define(
-  "sessions",
+const EmployerRefToken = db.define(
+  "employersessions",
   {
     tokenvalue: Sequelize.DataTypes.STRING,
     linkedjwt: Sequelize.DataTypes.STRING,
@@ -14,8 +14,8 @@ const RefToken = db.define(
   }
 );
 
-RefToken.associate = (models) => {
-  RefToken.belongsTo(User);
+EmployerRefToken.associate = (models) => {
+    EmployerRefToken.belongsTo(Employer);
 };
 
-module.exports = RefToken;
+module.exports = EmployerRefToken;

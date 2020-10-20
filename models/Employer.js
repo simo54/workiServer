@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 const EmployerRefToken = require("./EmployerRefreshToken");
+const Job = require("../models/Job")
 
 const Employer = db.define(
   "employers",
@@ -23,49 +24,6 @@ const Employer = db.define(
     country: Sequelize.DataTypes.STRING,
     companysize: Sequelize.DataTypes.STRING,
     password: Sequelize.DataTypes.STRING,
-
-    // id: {
-    //   allowNull: false,
-    //   autoIncrement: true,
-    //   primaryKey: true,
-    //   type: Sequelize.INTEGER,
-    // },
-    // companyname: {
-    //   type: Sequelize.STRING,
-    // },
-    // firstname: {
-    //   type: Sequelize.STRING,
-    // },
-    // lastname: {
-    //   type: Sequelize.STRING,
-    // },
-    // middlename: {
-    //   type: Sequelize.STRING,
-    // },
-    // email: {
-    //   type: Sequelize.STRING,
-    // },
-    // mobile: {
-    //   type: Sequelize.STRING,
-    // },
-    // address: {
-    //   type: Sequelize.STRING,
-    // },
-    // city: {
-    //   type: Sequelize.STRING,
-    // },
-    // zip: {
-    //   type: Sequelize.STRING,
-    // },
-    // country: {
-    //   type: Sequelize.STRING,
-    // },
-    // companysize: {
-    //   type: Sequelize.STRING,
-    // },
-    // password: {
-    //   type: Sequelize.STRING,
-    // },
   },
   {
     timestamps: false,
@@ -74,6 +32,7 @@ const Employer = db.define(
 
 Employer.associate = (models) => {
   Employer.hasMany(EmployerRefToken);
+  Employer.hasMany(Job)
 };
 
 module.exports = Employer;

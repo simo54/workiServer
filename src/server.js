@@ -14,16 +14,20 @@ const employerlogin = require("../authentication/employerLoginAuth");
 // Controllers
 const userController = require("../routes/userRoute");
 const employerController = require("../routes/employerRoute");
+const jobsController = require("../routes/jobsRoute");
 // Controllers
+
+// Prevent cors-error from local client-server requests
+app.use(cors());
+// Prevent cors-error from local client-server requests
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Prevent cors-error from local client-server requests
-app.use(cors());
-
 app.use("/user", userController);
 app.use("/employer", employerController);
+app.use("/jobs", jobsController);
 
 app.post("/login/user", userlogin);
 app.post("/login/userEmployer", employerlogin);

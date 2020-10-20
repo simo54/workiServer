@@ -4,7 +4,7 @@ const Job = require("../models/Job");
 const controller = {
   getJobs: async (req, res) => {
     console.log("beginning of getJobs");
-    Employer.findAll()
+    Job.findAll()
       .then((results) => {
         res.send(results);
         res.sendStatus(200)
@@ -27,11 +27,11 @@ const controller = {
     } = req.body;
     if (!jobtitle || !employmenttype ||!introduction ||!role ||!requirements ||!address ||!zip ||!city ||!country ||!contactdetails) {
       res.sendStatus(400);
+      console.log("problem is on creating the jobs")
       return;
     }
     try {
-      bcrypt.hash(password, 10, async function (err, hash) {
-        await Employer.create({
+        await Job.create({
             jobtitle,
             employmenttype,
             introduction,
@@ -44,7 +44,6 @@ const controller = {
             contactdetails
         });
         res.sendStatus(200);
-      });
     } catch (e) {
       res.sendStatus(500);
       return;

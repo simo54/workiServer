@@ -37,13 +37,13 @@ module.exports = async (req, res, next) => {
   // Generate refresh token - UUID4
   const refresh_token = uuid4();
   // Save refresh token in db with the jwt linked
-  await EmployerToken.findOneAndUpdate(
-    { tokenValue: cookies.refresh_token },
+  await EmployerToken.update(
     {
       tokenValue: refresh_token,
       linkedJWT: access_token,
       idUser: result.idUser,
-    }
+    },
+    { where: { tokenValue: cookies.refresh_token } }
   );
   // Send back both to the client
   res.setHeader("Set-Cookie", [

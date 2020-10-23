@@ -21,7 +21,6 @@ const jobsController = require("../routes/jobsRoute");
 app.use(cors());
 // Prevent cors-error from local client-server requests
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

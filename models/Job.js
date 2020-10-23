@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const Employer = require("../models/Employer")
+const Employer = require("../models/Employer");
+const JobApplication = require("./JobApplication");
 
 const Job = db.define(
   "jobs",
@@ -18,8 +19,8 @@ const Job = db.define(
     datejobpost: {
       type: Sequelize.DATEONLY,
       allowNull: false,
-      defaultValue: Sequelize.NOW
-    }
+      defaultValue: Sequelize.NOW,
+    },
   },
   {
     timestamps: false,
@@ -28,6 +29,10 @@ const Job = db.define(
 
 Job.associate = (models) => {
   Job.belongsTo(Employer);
+};
+
+Job.associate = (models) => {
+  Job.hasMany(JobApplication);
 };
 
 module.exports = Job;

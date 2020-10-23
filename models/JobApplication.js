@@ -1,37 +1,30 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const RefToken = require("./RefreshToken");
-const ProfileUser = require("./ProfileUser");
+const Job = require("./Job");
 
-const User = db.define(
-  "users",
+const JobApplication = db.define(
+  "jobapplications",
   {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: Sequelize.INTEGER,
-    },
     firstname: Sequelize.DataTypes.STRING,
     lastname: Sequelize.DataTypes.STRING,
     middlename: Sequelize.DataTypes.STRING,
-    age: Sequelize.DataTypes.INTEGER,
+    dateofbirth: Sequelize.DataTypes.STRING,
     email: Sequelize.DataTypes.STRING,
     mobile: Sequelize.DataTypes.STRING,
     address: Sequelize.DataTypes.STRING,
     city: Sequelize.DataTypes.STRING,
     zip: Sequelize.DataTypes.STRING,
     country: Sequelize.DataTypes.STRING,
-    password: Sequelize.DataTypes.STRING,
+    coverletter: Sequelize.DataTypes.TEXT,
+    resume: Sequelize.DataTypes.BLOB,
   },
   {
     timestamps: false,
   }
 );
 
-User.associate = (models) => {
-  User.hasOne(ProfileUser);
-  User.hasMany(RefToken);
+JobApplication.associate = (models) => {
+  JobApplication.belongsTo(Job);
 };
 
-module.exports = User;
+module.exports = JobApplication;

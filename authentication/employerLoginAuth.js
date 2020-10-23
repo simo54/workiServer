@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const uuid4 = require("uuid4");
+const cookie = require("cookie");
 
 const Employer = require("../models/Employer");
 const EmployerRefToken = require("../models/EmployerRefreshToken");
@@ -13,7 +14,7 @@ module.exports = async (req, res, next) => {
   // We check if email and password are correct
   if (!email || !password) {
     res.sendStatus(400);
-    console.log("problem is in checking email and password")
+    console.log("problem is in checking email and password");
     return;
   }
 
@@ -62,6 +63,17 @@ module.exports = async (req, res, next) => {
       linkedjwt: access_token,
       user_id: result.id,
     });
+
+    // Send the access token and the refresh as cookies
+    res.setHeader("Set-Cookie", [
+      cookie.serialize("access_token", String(access_token), {
+        httpOnly: true,
+      }),
+      cookie.serialize("refresh_token", String(refresh_token), {
+        httpOnly: true,
+      }),
+    ]);
+    console.log("cookies created!");
     res.sendStatus(200);
   } catch (e) {
     console.log(e);

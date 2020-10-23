@@ -31,19 +31,20 @@ module.exports = async (req, res, next) => {
     { idUser: result.idUser },
     process.env.PRIV_KEY,
     {
-      expiresIn: 60 * 5,
+      expiresIn: 60 * 1,
     }
   );
   // Generate refresh token - UUID4
   const refresh_token = uuid4();
   // Save refresh token in db with the jwt linked
-  await Usertoken.findOneAndUpdate(
-    { tokenValue: cookies.refresh_token },
+
+  await Usertoken.update(
     {
       tokenValue: refresh_token,
       linkedJWT: access_token,
       idUser: result.idUser,
-    }
+    },
+    { where: { tokenValue: cookies.refresh_token } }
   );
   // Send back both to the client
   res.setHeader("Set-Cookie", [
@@ -55,5 +56,4 @@ module.exports = async (req, res, next) => {
     }),
   ]);
   // send back the new values
-  next();
 };

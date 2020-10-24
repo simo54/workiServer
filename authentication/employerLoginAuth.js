@@ -28,7 +28,7 @@ module.exports = async (req, res, next) => {
     // If user DOES NOT exist
     if (!result) {
       res.sendStatus(400);
-      res.send("Wrong user");
+      console.log("problem is user does not exist");
       return;
     }
 
@@ -41,6 +41,7 @@ module.exports = async (req, res, next) => {
     // If user DOES NOT match
     if (!password) {
       res.sendStatus(400);
+      console.log("problem is password does not match");
       return;
     }
 
@@ -50,7 +51,7 @@ module.exports = async (req, res, next) => {
     const access_token = jwt.sign(
       { user_id: result.id },
       process.env.PRIV_KEY,
-      { expiresIn: 60 * 5 },
+      { expiresIn: 60 * 1 },
       console.log("This is result._id: " + result.id)
     );
 

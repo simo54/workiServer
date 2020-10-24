@@ -1,5 +1,4 @@
-const bcrypt = require("bcrypt");
-const JobApplication = require("../models/JobApplication");
+const JobApplication = require("../models/UserJobApplication");
 
 const controller = {
   getJobsApplications: async (req, res) => {
@@ -18,7 +17,6 @@ const controller = {
       dateofbirth,
       email,
       mobile,
-      address,
       city,
       zip,
       country,
@@ -45,7 +43,6 @@ const controller = {
         dateofbirth,
         email,
         mobile,
-        address,
         city,
         zip,
         country,

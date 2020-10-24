@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const Job = require("../models/Job");
 
 const controller = {

@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 const RefToken = require("./RefreshToken");
-const ProfileUser = require("./ProfileUser");
+const ProfileUser = require("./UserProfile");
 
 const User = db.define(
   "users",

@@ -1,52 +1,49 @@
 const bcrypt = require("bcrypt");
-const Employer = require("../models/Employer");
+const UserProfile = require("../models/UserProfile");
 
 const controller = {
-  getEmployer: async (req, res) => {
-    console.log("beginning of employer");
-    Employer.findAll()
+  getUsers: async (req, res) => {
+    User.findAll({
+      include: db.RefToken,
+    })
       .then((results) => {
         res.send(results);
         res.sendStatus(200);
       })
       .catch((err) => console.log(err));
   },
-  createEmployer: async (req, res) => {
-    console.log("beginning of createEmployer");
+  createUser: async (req, res) => {
     const {
-      companyname,
       firstname,
       lastname,
       middlename,
-      logo,
+      age,
       email,
       mobile,
       address,
       city,
       zip,
       country,
-      companysize,
       password,
     } = req.body;
-    if (!email || !zip || !country || !password || !companysize) {
+    if (!firstname || !lastname || !email || !zip || !country || !password) {
       res.sendStatus(400);
+      console.log("something is wrong here");
       return;
     }
     try {
       bcrypt.hash(password, 10, async function (err, hash) {
-        await Employer.create({
-          companyname,
+        await User.create({
           firstname,
           lastname,
           middlename,
-          logo,
+          age,
           email,
           mobile,
           address,
           city,
           zip,
           country,
-          companysize,
           password: hash,
         });
         res.sendStatus(200);

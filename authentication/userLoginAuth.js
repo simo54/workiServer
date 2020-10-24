@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
     const access_token = jwt.sign(
       { user_id: result.id },
       process.env.PRIV_KEY,
-      { expiresIn: 60 * 5 },
+      { expiresIn: 60 * 1 },
       console.log("This is result._id: " + result.id)
     );
 

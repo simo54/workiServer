@@ -14,8 +14,8 @@ const EmployerRefToken = db.define(
   }
 );
 
-EmployerRefToken.associate = (models) => {
-    EmployerRefToken.belongsTo(Employer);
-};
+// EmployerRefToken.associate = (models) => {
+//     EmployerRefToken.belongsTo(Employer);
+// };
 
 module.exports = EmployerRefToken;

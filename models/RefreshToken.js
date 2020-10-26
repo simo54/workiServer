@@ -14,8 +14,4 @@ const RefToken = db.define(
   }
 );
 
-RefToken.associate = (models) => {
-  RefToken.belongsTo(User);
-};
-
 module.exports = RefToken;

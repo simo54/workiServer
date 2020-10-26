@@ -1,4 +1,4 @@
-const JobApplication = require("../models/UserJobApplication");
+const JobApplication = require("../models/JobApplication");
 
 const controller = {
   getJobsApplications: async (req, res) => {

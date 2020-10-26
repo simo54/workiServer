@@ -24,10 +24,12 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Routing
 app.use("/user", userController);
 app.use("/employer", employerController);
-app.use("/jobs", jobsController);
+// app.use("/jobs", jobsController);
 
+// Login user and employer
 app.post("/login/user", userlogin);
 app.post("/login/userEmployer", employerlogin);
 

@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 const RefToken = require("./RefreshToken");
 const ProfileUser = require("./UserProfile");
+const JobApplication = require("./JobApplication");
 
 const User = db.define(
   "users",
@@ -31,7 +32,8 @@ const User = db.define(
 
 User.associate = (models) => {
   User.hasOne(ProfileUser);
-  User.hasMany(RefToken);
+  // User.hasMany(RefToken);
+  User.hasMany(JobApplication);
 };
 
 module.exports = User;

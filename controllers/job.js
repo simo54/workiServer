@@ -26,7 +26,6 @@ const controller = {
     const {
       jobtitle,
       employmenttype,
-      introduction,
       role,
       requirements,
       address,
@@ -34,6 +33,7 @@ const controller = {
       city,
       country,
       contactdetails,
+      introduction,
     } = req.body;
     if (
       !jobtitle ||
@@ -52,10 +52,10 @@ const controller = {
       return;
     }
     try {
+      console.log("everything fine until here");
       await Job.create({
         jobtitle,
         employmenttype,
-        introduction,
         role,
         requirements,
         address,
@@ -63,9 +63,12 @@ const controller = {
         city,
         country,
         contactdetails,
+        introduction,
       });
+
       res.sendStatus(200);
     } catch (e) {
+      console.log(e);
       res.sendStatus(500);
       return;
     }

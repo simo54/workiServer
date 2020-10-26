@@ -2,16 +2,16 @@ const bcrypt = require("bcrypt");
 const Employer = require("../models/Employer");
 
 const controller = {
-  getEmployer: async (req, res) => {
+  getEmployer: async (req, res, next) => {
     console.log("beginning of employer");
-    Employer.findAll()
+    await Employer.findAll()
       .then((results) => {
         res.send(results);
         res.sendStatus(200);
       })
       .catch((err) => console.log(err));
   },
-  createEmployer: async (req, res) => {
+  createEmployer: async (req, res, next) => {
     console.log("beginning of createEmployer");
     const {
       companyname,

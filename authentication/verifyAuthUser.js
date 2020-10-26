@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
     return;
   }
   // notValid: use refresh token create a new access token
-  //        verify refresh is valid, create new jwt, create new refresh token, update in the database
+  // verify refresh is valid, create new jwt, create new refresh token, update in the database
   const result = await Usertoken.findOne({
     tokenValue: cookies.refresh_token,
   });

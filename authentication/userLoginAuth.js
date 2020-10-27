@@ -26,8 +26,8 @@ module.exports = async (req, res, next) => {
 
     // If user DOES NOT exist
     if (!result) {
+      res.send({ message: "user not found" });
       res.sendStatus(400);
-      res.send("Wrong user");
       return;
     }
 
@@ -39,6 +39,7 @@ module.exports = async (req, res, next) => {
 
     // If user DOES NOT match
     if (!password) {
+      res.send({ message: "password does not match" });
       res.sendStatus(400);
       return;
     }
@@ -47,9 +48,9 @@ module.exports = async (req, res, next) => {
 
     // Generate access token - JWT
     const access_token = jwt.sign(
-      { user_id: result.id },
+      { user_id: result.id }, // Assign the userId to the row of the session
       process.env.PRIV_KEY,
-      { expiresIn: 60 * 1 },
+      { expiresIn: 60 * 5 },
       console.log("This is result._id: " + result.id)
     );
 
@@ -64,16 +65,10 @@ module.exports = async (req, res, next) => {
     });
 
     // Send the access token and the refresh as cookies
-    res.setHeader("Set-Cookie", [
-      cookie.serialize("access_token", String(access_token), {
-        httpOnly: true,
-      }),
-      cookie.serialize("refresh_token", String(refresh_token), {
-        httpOnly: true,
-      }),
-    ]);
-    console.log("cookies created!");
-    res.sendStatus(200);
+    res.cookie("access_token", String(access_token), { httpOnly: true });
+    res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
+
+    res.send(200);
   } catch (e) {
     console.log(e);
     res.sendStatus(400);

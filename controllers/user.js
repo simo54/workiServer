@@ -2,6 +2,19 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 
 const controller = {
+  getUserById: async (req, res) => {
+    const { id } = req.params;
+    User.findAll({
+      where: { id: req.params.id },
+    })
+      .then((results) => {
+        res.send(results);
+        res.sendStatus(200);
+        return;
+      })
+      .catch((err) => console.log(err));
+  },
+
   getUsers: async (req, res) => {
     User.findAll({
       include: db.RefToken,
@@ -9,6 +22,7 @@ const controller = {
       .then((results) => {
         res.send(results);
         res.sendStatus(200);
+        return;
       })
       .catch((err) => console.log(err));
   },
@@ -47,6 +61,7 @@ const controller = {
           password: hash,
         });
         res.sendStatus(200);
+        return;
       });
     } catch (e) {
       res.sendStatus(500);

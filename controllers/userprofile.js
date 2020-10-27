@@ -9,6 +9,7 @@ const controller = {
       .then((results) => {
         res.send(results);
         res.sendStatus(200);
+        return;
       })
       .catch((err) => console.log(err));
   },
@@ -55,4 +56,4 @@ const controller = {
   },
 };
 
-module.exports = controller;
+module.exports = UserProfile;

@@ -3,24 +3,23 @@ const Job = require("../models/Job");
 const controller = {
   getJobs: async (req, res) => {
     console.log("beginning of getJobs");
-    Job.findAll()
+    await Job.findAll()
       .then((results) => {
         res.send(results);
-        res.sendStatus(200);
+        return;
       })
       .catch((err) => console.log(err));
   },
-  getJobId: async (req, res) => {
-    console.log("beginning of getJobId");
-    const { id } = req.params;
-    console.log(id);
-    Job.findOne({ where: { id: req.params.id } })
-      .then((results) => {
-        res.send(results);
-        res.sendStatus(200);
-      })
-      .catch((err) => console.log(err));
-  },
+  // getJobId: async (req, res) => {
+  //   console.log("beginning of getJobId");
+  //   const { id } = req.params;
+  //   Job.findOne({ where: { id: req.params.id } })
+  //     .then((results) => {
+  //       // res.send(results);
+  //       return;
+  //     })
+  //     .catch((err) => console.log("Error is: " + err));
+  // },
   createJob: async (req, res) => {
     console.log("beginning of createJob");
     const {
@@ -48,11 +47,9 @@ const controller = {
       !contactdetails
     ) {
       res.sendStatus(400);
-      console.log("problem is on creating the jobs");
       return;
     }
     try {
-      console.log("everything fine until here");
       await Job.create({
         jobtitle,
         employmenttype,
@@ -65,8 +62,8 @@ const controller = {
         contactdetails,
         introduction,
       });
-
       res.sendStatus(200);
+      return;
     } catch (e) {
       console.log(e);
       res.sendStatus(500);

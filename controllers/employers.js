@@ -50,6 +50,7 @@ const controller = {
           password: hash,
         });
         res.sendStatus(200);
+        return;
       });
     } catch (e) {
       res.sendStatus(500);

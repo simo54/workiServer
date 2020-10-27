@@ -4,54 +4,62 @@ const uuid4 = require("uuid4");
 
 const EmployerToken = require("../models/EmployerRefreshToken");
 
-module.exports = async (req, res, next) => {
-  // get cookies from the request
+module.exports = async (req, res) => {
   const cookies = cookie.parse(req.headers.cookie || "");
-  console.log(cookies);
 
-  // verify the validity of the access token
-  const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
-  // valid: next
-  if (at_validity) {
-    next();
-    return;
-  }
-  // notValid: use refresh token create a new access token
-  //        verify refresh is valid, create new jwt, create new refresh token, update in the database
-  const result = await EmployerToken.findOne({
-    tokenValue: cookies.refresh_token,
-  });
-  if (!result) {
-    res.sendStatus(401);
-    return;
-  }
+  try {
+    const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
 
-  // Generate access token - JWT
-  const access_token = jwt.sign(
-    { idUser: result.idUser },
-    process.env.PRIV_KEY,
-    {
-      expiresIn: 60 * 5,
+    if (at_validity) {
+      console.log("TOKEN HAS BEEN VERIFIED");
+      res.json({ isAuthenticated: true });
+      return;
     }
-  );
-  // Generate refresh token - UUID4
-  const refresh_token = uuid4();
-  // Save refresh token in db with the jwt linked
-  await EmployerToken.update(
-    {
-      tokenValue: refresh_token,
-      linkedJWT: access_token,
-      idUser: result.idUser,
-    },
-    { where: { tokenValue: cookies.refresh_token } }
-  );
-  // Send back both to the client
-  res.setHeader("Set-Cookie", [
-    cookie.serialize("access_token", String(access_token), {
-      httpOnly: true,
-    }),
-    cookie.serialize("refresh_token", String(refresh_token), {
-      httpOnly: true,
-    }),
-  ]);
+  } catch (e) {
+    if (!cookies.refresh_token) {
+      res.status(401).json({
+        isAuthenticated: false,
+      });
+      return;
+    }
+    const result = await EmployerToken.findOne({
+      where: {
+        tokenValue: cookies.refresh_token,
+      },
+    });
+    console.log(result);
+    if (!result || !result.length) {
+      res.sendStatus(401).json({ isAuthenticated: false });
+      return;
+    }
+
+    const access_token = jwt.sign(
+      { idUser: result.idUser },
+      process.env.PRIV_KEY,
+      {
+        expiresIn: 60 * 0.1,
+      }
+    );
+
+    const refresh_token = uuid4();
+
+    await EmployerToken.update(
+      {
+        tokenValue: refresh_token,
+        linkedJWT: access_token,
+        idUser: result.idUser,
+      },
+      { where: { tokenValue: cookies.refresh_token } }
+    );
+
+    res.setHeader("Set-Cookie", [
+      cookie.serialize("access_token", String(access_token), {
+        httpOnly: true,
+      }),
+      cookie.serialize("refresh_token", String(refresh_token), {
+        httpOnly: true,
+      }),
+    ]);
+    res.json({ isAuthenticated: true });
+  }
 };

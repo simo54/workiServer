@@ -9,7 +9,6 @@ const app = express();
 // User and Employer Login
 const userlogin = require("../authentication/userLoginAuth");
 const employerlogin = require("../authentication/employerLoginAuth");
-// User and Employer Login
 
 // Controllers
 const userController = require("../routes/userRoute");
@@ -18,7 +17,16 @@ const jobsController = require("../routes/jobsRoute");
 // Controllers
 
 // Prevent cors-error from local client-server requests
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET, POST, PUT, DELETE, HEAD",
+    allowHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    exposedHeaders: "Content-Range,X-Content-Range",
+    preflightContinue: true,
+    credentials: true,
+  })
+);
 // Prevent cors-error from local client-server requests
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,11 +35,11 @@ app.use(bodyParser.json());
 // Routing
 app.use("/user", userController);
 app.use("/employer", employerController);
-// app.use("/jobs", jobsController);
+app.use("/jobs", jobsController);
 
 // Login user and employer
 app.post("/login/user", userlogin);
-app.post("/login/userEmployer", employerlogin);
+app.post("/login/useremployer", employerlogin);
 
 app.listen(port, () => {
   console.log("Server running on port " + port);

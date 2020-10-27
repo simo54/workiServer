@@ -1,10 +1,10 @@
-// const express = require("express");
-// const route = express.Router();
+const express = require("express");
+const route = express.Router();
 
-// const jobsController = require("../controllers/job");
+const jobsController = require("../controllers/job");
 
-// route.get("/", jobsController.getJobs);
+route.get("/", jobsController.getJobs);
 // route.get("/:id", jobsController.getJobId);
-// route.post("/create", jobsController.createJob);
+route.post("/create", jobsController.createJob);
 
-// module.exports = route;
+module.exports = route;

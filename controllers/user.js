@@ -4,12 +4,12 @@ const User = require("../models/User");
 const controller = {
   getUserById: async (req, res) => {
     const { id } = req.params;
-    User.findAll({
+    User.findOne({
       where: { id: req.params.id },
     })
       .then((results) => {
         res.send(results);
-        res.sendStatus(200);
+        // res.sendStatus(200);
         return;
       })
       .catch((err) => console.log(err));
@@ -17,7 +17,7 @@ const controller = {
 
   getUsers: async (req, res) => {
     User.findAll({
-      include: db.RefToken,
+      // include: db.RefToken,
     })
       .then((results) => {
         res.send(results);

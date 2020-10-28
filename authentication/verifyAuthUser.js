@@ -4,15 +4,18 @@ const uuid4 = require("uuid4");
 
 const Usertoken = require("../models/RefreshToken");
 
-module.exports = async (req, res, next) => {
+module.exports = async (req, res) => {
   const cookies = cookie.parse(req.headers.cookie || "");
 
   try {
     const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
+    console.log(at_validity);
 
     if (at_validity) {
       console.log("TOKEN HAS BEEN VERIFIED");
-      res.json({ isAuthenticated: true });
+      res
+        .status(200)
+        .json({ isAuthenticated: true, user_id: at_validity.user_id });
       return;
     }
   } catch (e) {
@@ -27,13 +30,14 @@ module.exports = async (req, res, next) => {
         tokenvalue: cookies.refresh_token,
       },
     });
+    console.log(result.user_id);
     if (!result) {
       res.sendStatus(401).json({ isAuthenticated: false });
       return;
     }
 
     const access_token = jwt.sign(
-      { idUser: result.idUser },
+      { user_id: result.user_id },
       process.env.PRIV_KEY,
       { expiresIn: 60 * 5 }
     );
@@ -42,15 +46,15 @@ module.exports = async (req, res, next) => {
 
     await Usertoken.update(
       {
-        tokenValue: refresh_token,
-        linkedJWT: access_token,
-        idUser: result.idUser,
+        tokenvalue: refresh_token,
+        linkedjwt: access_token,
+        user_id: result.user_id,
       },
-      { where: { tokenValue: cookies.refresh_token } }
+      { where: { tokenvalue: cookies.refresh_token } }
     );
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
-    res.json({ isAuthenticated: true });
+    res.status(200).json({ isAuthenticated: true, user_id: result.user_id });
     console.log("Authentication SUCCESS in line 67 of verifyUser");
   }
 };

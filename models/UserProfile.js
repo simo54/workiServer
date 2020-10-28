@@ -19,6 +19,7 @@ const ProfileUser = db.define(
     aboutme: Sequelize.DataTypes.TEXT,
     certificates: Sequelize.DataTypes.BLOB,
     skills: Sequelize.DataTypes.TEXT,
+    resume: Sequelize.DataTypes.BLOB,
   },
   {
     timestamps: false,

@@ -23,6 +23,11 @@ const User = db.define(
     city: Sequelize.DataTypes.STRING,
     zip: Sequelize.DataTypes.STRING,
     country: Sequelize.DataTypes.STRING,
+    // profilepicture: Sequelize.DataTypes.BLOB,
+    // aboutme: Sequelize.DataTypes.TEXT,
+    // certificates: Sequelize.DataTypes.BLOB,
+    // skills: Sequelize.DataTypes.TEXT,
+    // resume: Sequelize.DataTypes.BLOB,
     password: Sequelize.DataTypes.STRING,
   },
   {

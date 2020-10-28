@@ -63,7 +63,6 @@ module.exports = async (req, res, next) => {
     // Send the access token and the refresh as cookies
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
-
     res.sendStatus(200);
     return;
   } catch (e) {

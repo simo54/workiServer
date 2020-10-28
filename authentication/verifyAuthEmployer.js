@@ -12,7 +12,6 @@ module.exports = async (req, res) => {
 
     if (at_validity) {
       console.log("TOKEN HAS BEEN VERIFIED");
-      console.log(at_validity.user_id);
       res
         .status(200)
         .json({ isAuthenticated: true, user_id: at_validity.user_id });
@@ -36,7 +35,7 @@ module.exports = async (req, res) => {
     }
 
     const access_token = jwt.sign(
-      { idUser: result.idUser },
+      { user_id: result.user_id },
       process.env.PRIV_KEY,
       { expiresIn: 60 * 5 }
     );
@@ -45,17 +44,16 @@ module.exports = async (req, res) => {
 
     await EmployerToken.update(
       {
-        tokenValue: refresh_token,
-        linkedJWT: access_token,
-        idUser: result.idUser,
+        tokenvalue: refresh_token,
+        linkedjwt: access_token,
+        user_id: result.user_id,
       },
-      { where: { tokenValue: cookies.refresh_token } }
+      { where: { tokenvalue: cookies.refresh_token } }
     );
 
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
-    res
-      .status(200)
-      .json({ isAuthenticated: true, user_id: at_validity.user_id });
+    res.status(200).json({ isAuthenticated: true, user_id: user_id });
+    return;
   }
 };

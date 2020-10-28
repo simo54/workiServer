@@ -12,7 +12,10 @@ module.exports = async (req, res) => {
 
     if (at_validity) {
       console.log("TOKEN HAS BEEN VERIFIED");
-      res.json({ isAuthenticated: true });
+      console.log(at_validity.user_id);
+      res
+        .status(200)
+        .json({ isAuthenticated: true, user_id: at_validity.user_id });
       return;
     }
   } catch (e) {
@@ -24,11 +27,10 @@ module.exports = async (req, res) => {
     }
     const result = await EmployerToken.findOne({
       where: {
-        tokenValue: cookies.refresh_token,
+        tokenvalue: cookies.refresh_token,
       },
     });
-    console.log(result);
-    if (!result || !result.length) {
+    if (!result) {
       res.sendStatus(401).json({ isAuthenticated: false });
       return;
     }
@@ -36,9 +38,7 @@ module.exports = async (req, res) => {
     const access_token = jwt.sign(
       { idUser: result.idUser },
       process.env.PRIV_KEY,
-      {
-        expiresIn: 60 * 0.1,
-      }
+      { expiresIn: 60 * 5 }
     );
 
     const refresh_token = uuid4();
@@ -52,14 +52,10 @@ module.exports = async (req, res) => {
       { where: { tokenValue: cookies.refresh_token } }
     );
 
-    res.setHeader("Set-Cookie", [
-      cookie.serialize("access_token", String(access_token), {
-        httpOnly: true,
-      }),
-      cookie.serialize("refresh_token", String(refresh_token), {
-        httpOnly: true,
-      }),
-    ]);
-    res.json({ isAuthenticated: true });
+    res.cookie("access_token", String(access_token), { httpOnly: true });
+    res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
+    res
+      .status(200)
+      .json({ isAuthenticated: true, user_id: at_validity.user_id });
   }
 };

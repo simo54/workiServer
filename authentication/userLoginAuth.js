@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
   // We check if email and password are correct
   if (!email || !password) {
     res.sendStatus(400);
-    console.log("problem is in checking email and password");
     return;
   }
 
@@ -26,7 +25,6 @@ module.exports = async (req, res, next) => {
 
     // If user DOES NOT exist
     if (!result) {
-      res.send({ message: "user not found" });
       res.sendStatus(400);
       return;
     }
@@ -37,9 +35,8 @@ module.exports = async (req, res, next) => {
     const passwordMatch = await bcrypt.compare(password, result.password);
     console.log("this is the password : " + passwordMatch);
 
-    // If user DOES NOT match
+    // If password DOES NOT match
     if (!password) {
-      res.send({ message: "password does not match" });
       res.sendStatus(400);
       return;
     }
@@ -50,8 +47,7 @@ module.exports = async (req, res, next) => {
     const access_token = jwt.sign(
       { user_id: result.id }, // Assign the userId to the row of the session
       process.env.PRIV_KEY,
-      { expiresIn: 60 * 5 },
-      console.log("This is result._id: " + result.id)
+      { expiresIn: 60 * 5 }
     );
 
     // Generate refresh token - UUID4
@@ -68,7 +64,8 @@ module.exports = async (req, res, next) => {
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
 
-    res.send(200);
+    res.sendStatus(200);
+    return;
   } catch (e) {
     console.log(e);
     res.sendStatus(400);

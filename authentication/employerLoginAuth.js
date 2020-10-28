@@ -9,12 +9,10 @@ const EmployerRefToken = require("../models/EmployerRefreshToken");
 module.exports = async (req, res, next) => {
   // We get the email and the password from the login inputs
   const { email, password } = req.body;
-  console.log(email, password);
 
   // We check if email and password are correct
   if (!email || !password) {
     res.sendStatus(400);
-    console.log("problem is in checking email and password");
     return;
   }
 
@@ -28,7 +26,6 @@ module.exports = async (req, res, next) => {
     // If user DOES NOT exist
     if (!result) {
       res.sendStatus(400);
-      console.log("problem is user does not exist");
       return;
     }
 
@@ -41,7 +38,6 @@ module.exports = async (req, res, next) => {
     // If PASSWORD DOES NOT match
     if (!passwordMatch) {
       res.sendStatus(400);
-      console.log("problem is password does not match");
       return;
     }
 
@@ -49,10 +45,9 @@ module.exports = async (req, res, next) => {
 
     // Generate access token - JWT
     const access_token = jwt.sign(
-      { user_id: result.id },
+      { user_id: result.id }, // Assign the userId to the row of the session
       process.env.PRIV_KEY,
-      { expiresIn: 60 * 5 },
-      console.log("This is result._id: " + result.id)
+      { expiresIn: 60 * 5 }
     );
 
     // Generate refresh token - UUID4
@@ -66,15 +61,8 @@ module.exports = async (req, res, next) => {
     });
 
     // Send the access token and the refresh as cookies
-    res.setHeader("Set-Cookie", [
-      cookie.serialize("access_token", String(access_token), {
-        httpOnly: true,
-      }),
-      cookie.serialize("refresh_token", String(refresh_token), {
-        httpOnly: true,
-      }),
-    ]);
-    console.log("cookies created!");
+    res.cookie("access_token", String(access_token), { httpOnly: true });
+    res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
     res.sendStatus(200);
   } catch (e) {
     console.log(e);

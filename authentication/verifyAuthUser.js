@@ -9,7 +9,9 @@ module.exports = async (req, res, next) => {
 
   try {
     const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
+
     if (at_validity) {
+      console.log("TOKEN HAS BEEN VERIFIED");
       res.json({ isAuthenticated: true });
       return;
     }

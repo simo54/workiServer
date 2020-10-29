@@ -15,7 +15,7 @@ route.get("/userIsAuthenticated", verifyAuthUser); // verify token and sessions 
 route.get("/:id", user_controller.getUserById);
 
 // Route for applying for job
-route.get("/jobapplications", jobapplication_controller.getJobsApplications);
+// route.get("/jobapplications", jobapplication_controller.getJobsApplications);
 route.post("/newjobapplication", jobapplication_controller.newJobApplication);
 
 module.exports = route;

@@ -8,4 +8,6 @@ route.get("/", employer_controller.getEmployer);
 route.post("/create", employer_controller.createEmployer);
 route.get("/employerIsAuthenticated", verifyAuthEmployer);
 
+route.get("/:id", employer_controller.getEmployerById);
+
 module.exports = route;

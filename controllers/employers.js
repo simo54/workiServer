@@ -7,7 +7,19 @@ const controller = {
     await Employer.findAll()
       .then((results) => {
         res.send(results);
-        res.sendStatus(200);
+        // res.sendStatus(200);
+      })
+      .catch((err) => console.log(err));
+  },
+  getEmployerById: async (req, res, next) => {
+    console.log("beginning of getEmployerById");
+    const { id } = req.params;
+    await Employer.findOne({
+      where: { id: req.params.id },
+    })
+      .then((results) => {
+        res.send(results);
+        // res.sendStatus(200);
       })
       .catch((err) => console.log(err));
   },

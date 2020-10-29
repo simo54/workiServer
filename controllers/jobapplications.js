@@ -15,7 +15,6 @@ const controller = {
       firstname,
       lastname,
       middlename,
-      dateofbirth,
       email,
       mobile,
       city,
@@ -24,24 +23,38 @@ const controller = {
       coverletter,
       resume,
     } = req.body;
-    if (
-      !firstname ||
-      !lastname ||
-      !email ||
-      !mobile ||
-      !coverletter
-      //   !resume
-    ) {
-      res.sendStatus(400);
-      console.log("something is wrong here");
-      return;
-    }
+    console.log(
+      firstname,
+      lastname,
+      middlename,
+      email,
+      mobile,
+      city,
+      zip,
+      country,
+      coverletter,
+      resume
+    );
+    // if (
+    //   !firstname ||
+    //   !lastname ||
+    //   !email ||
+    //   !mobile ||
+    //   !city ||
+    //   !zip ||
+    //   !country ||
+    //   !coverletter ||
+    //   !resume
+    // ) {
+    //   res.sendStatus(400);
+    //   console.log("something is wrong here");
+    //   return;
+    // }
     try {
       await JobApplication.create({
         firstname,
         lastname,
         middlename,
-        dateofbirth,
         email,
         mobile,
         city,

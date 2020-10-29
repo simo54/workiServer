@@ -4,7 +4,7 @@ const User = require("../models/User");
 const controller = {
   getUserById: async (req, res) => {
     const { id } = req.params;
-    User.findOne({
+    await User.findOne({
       where: { id: req.params.id },
     })
       .then((results) => {
@@ -14,9 +14,8 @@ const controller = {
       })
       .catch((err) => console.log(err));
   },
-
   getUsers: async (req, res) => {
-    User.findAll({
+    await User.findAll({
       // include: db.RefToken,
     })
       .then((results) => {

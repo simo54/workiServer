@@ -1,6 +1,7 @@
 const cookie = require("cookie");
 const jwt = require("jsonwebtoken");
 const uuid4 = require("uuid4");
+// const Employer = require("../models/Employer");
 
 const EmployerToken = require("../models/EmployerRefreshToken");
 
@@ -10,8 +11,23 @@ module.exports = async (req, res) => {
   try {
     const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
 
+    const checkIfEmployer = await EmployerToken.findOne({
+      where: {
+        tokenvalue: cookies.refresh_token,
+        user_id: at_validity.user_id,
+      },
+    });
+
+    if (!checkIfEmployer) {
+      throw "NO MATCH WITH EMPLOYER";
+    } else {
+      console.log("MATCH WITH EMPLOYER!");
+    }
+
+    // throw "error"
+
     if (at_validity) {
-      console.log("TOKEN HAS BEEN VERIFIED");
+      console.log("EMPLOYER TOKEN HAS BEEN VERIFIED");
       res
         .status(200)
         .json({ isAuthenticated: true, user_id: at_validity.user_id });
@@ -53,7 +69,7 @@ module.exports = async (req, res) => {
 
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
-    res.status(200).json({ isAuthenticated: true, user_id: user_id });
-    return;
+    res.status(200).json({ isAuthenticated: true, user_id: result.user_id });
+    // res.status(200).json({ isAuthenticated: true, user_id: user_id });
   }
 };

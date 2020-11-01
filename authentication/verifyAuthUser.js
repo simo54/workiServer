@@ -9,17 +9,31 @@ module.exports = async (req, res) => {
 
   try {
     const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
-    console.log(at_validity);
+
+    const checkIfUser = await Usertoken.findOne({
+      where: {
+        tokenvalue: cookies.refresh_token,
+        user_id: at_validity.user_id,
+      },
+    });
+
+    if (!checkIfUser) {
+      throw "NO MATCH WITH USER";
+    } else {
+      console.log("MATCH WITH USER!");
+    }
 
     if (at_validity) {
-      console.log("TOKEN HAS BEEN VERIFIED");
+      console.log("USER TOKEN HAS BEEN VERIFIED");
       res
         .status(200)
         .json({ isAuthenticated: true, user_id: at_validity.user_id });
       return;
     }
   } catch (e) {
+    console.log("Catch of verifyAuthUser.js: " + e);
     if (!cookies.refresh_token) {
+      console.log("USER TOKEN NOT VERIFIED 23");
       res.status(401).json({
         isAuthenticated: false,
       });
@@ -30,8 +44,8 @@ module.exports = async (req, res) => {
         tokenvalue: cookies.refresh_token,
       },
     });
-    console.log(result.user_id);
     if (!result) {
+      console.log("USER TOKEN NOT VERIFIED 35");
       res.sendStatus(401).json({ isAuthenticated: false });
       return;
     }
@@ -55,6 +69,7 @@ module.exports = async (req, res) => {
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
     res.status(200).json({ isAuthenticated: true, user_id: result.user_id });
-    console.log("Authentication SUCCESS in line 67 of verifyUser");
+    return;
+    // res.status(200).json({ isAuthenticated: true, user_id: result.user_id });
   }
 };

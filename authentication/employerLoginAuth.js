@@ -20,7 +20,6 @@ module.exports = async (req, res, next) => {
   try {
     const result = await Employer.findOne({
       where: { email: req.body.email },
-      // include: ["user_id"],
     });
 
     // If user DOES NOT exist
@@ -33,7 +32,6 @@ module.exports = async (req, res, next) => {
 
     // Check if password match
     const passwordMatch = await bcrypt.compare(password, result.password);
-    console.log("this is the password : " + passwordMatch);
 
     // If PASSWORD DOES NOT match
     if (!passwordMatch) {
@@ -64,8 +62,10 @@ module.exports = async (req, res, next) => {
     res.cookie("access_token", String(access_token), { httpOnly: true });
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
     res.sendStatus(200);
+    return;
   } catch (e) {
     console.log(e);
     res.sendStatus(400);
+    return;
   }
 };

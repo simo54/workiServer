@@ -15,6 +15,8 @@ const JobApplication = db.define(
     country: Sequelize.DataTypes.STRING,
     coverletter: Sequelize.DataTypes.TEXT,
     resume: Sequelize.DataTypes.BLOB,
+    userid: Sequelize.DataTypes.INTEGER,
+    jobref: Sequelize.DataTypes.STRING,
   },
   {
     timestamps: false,

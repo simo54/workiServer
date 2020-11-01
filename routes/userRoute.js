@@ -12,6 +12,7 @@ route.post("/create", user_controller.createUser);
 
 // Route for checking if user is authenticated in order to access the page
 route.get("/userIsAuthenticated", verifyAuthUser); // verify token and sessions uuid
+
 route.get("/:id", user_controller.getUserById);
 
 // Route for applying for job

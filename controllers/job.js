@@ -10,16 +10,26 @@ const controller = {
       })
       .catch((err) => console.log(err));
   },
-  // getJobId: async (req, res) => {
-  //   console.log("beginning of getJobId");
-  //   const { id } = req.params;
-  //   Job.findOne({ where: { id: req.params.id } })
-  //     .then((results) => {
-  //       // res.send(results);
-  //       return;
-  //     })
-  //     .catch((err) => console.log("Error is: " + err));
-  // },
+  getJobRelated: async (req, res) => {
+    console.log("beginning of getJobRelated");
+    const { id } = req.params;
+    Job.findAll({ where: { companyid: req.params.id } })
+      .then((results) => {
+        res.send(results);
+        return;
+      })
+      .catch((err) => console.log("Error is: " + err));
+  },
+  getJobId: async (req, res) => {
+    console.log("beginning of getJobId");
+    const { id } = req.params;
+    Job.findOne({ where: { id: req.params.id } })
+      .then((results) => {
+        res.send(results);
+        return;
+      })
+      .catch((err) => console.log("Error is: " + err));
+  },
   createJob: async (req, res) => {
     console.log("beginning of createJob");
     const {
@@ -27,40 +37,42 @@ const controller = {
       employmenttype,
       role,
       requirements,
-      address,
       zip,
       city,
       country,
       contactdetails,
       introduction,
+      companyid,
+      jobref,
     } = req.body;
-    if (
-      !jobtitle ||
-      !employmenttype ||
-      !introduction ||
-      !role ||
-      !requirements ||
-      !address ||
-      !zip ||
-      !city ||
-      !country ||
-      !contactdetails
-    ) {
-      res.sendStatus(400);
-      return;
-    }
+    // if (
+    //   !jobtitle ||
+    //   !employmenttype ||
+    //   !introduction ||
+    //   !role ||
+    //   !requirements ||
+    //   !address ||
+    //   !zip ||
+    //   !city ||
+    //   !country ||
+    //   !contactdetails
+    // ) {
+    //   res.sendStatus(400);
+    //   return;
+    // }
     try {
       await Job.create({
         jobtitle,
         employmenttype,
         role,
         requirements,
-        address,
         zip,
         city,
         country,
         contactdetails,
         introduction,
+        companyid,
+        jobref,
       });
       res.sendStatus(200);
       return;

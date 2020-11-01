@@ -20,7 +20,6 @@ const controller = {
     })
       .then((results) => {
         res.send(results);
-        res.sendStatus(200);
         return;
       })
       .catch((err) => console.log(err));

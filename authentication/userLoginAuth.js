@@ -20,7 +20,6 @@ module.exports = async (req, res, next) => {
   try {
     const result = await User.findOne({
       where: { email: req.body.email },
-      // include: ["user_id"],
     });
 
     // If user DOES NOT exist
@@ -33,7 +32,6 @@ module.exports = async (req, res, next) => {
 
     // Check if password match
     const passwordMatch = await bcrypt.compare(password, result.password);
-    console.log("this is the password : " + passwordMatch);
 
     // If password DOES NOT match
     if (!password) {
@@ -66,7 +64,8 @@ module.exports = async (req, res, next) => {
     res.sendStatus(200);
     return;
   } catch (e) {
-    console.log(e);
+    console.log("Catch of userLoginAuth.js: " + e);
     res.sendStatus(400);
+    return;
   }
 };

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node ./src/server.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

@@ -1,7 +1,5 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const RefToken = require("./RefreshToken");
-const ProfileUser = require("./UserProfile");
 const JobApplication = require("./JobApplication");
 
 const User = db.define(
@@ -16,18 +14,15 @@ const User = db.define(
     firstname: Sequelize.DataTypes.STRING,
     lastname: Sequelize.DataTypes.STRING,
     middlename: Sequelize.DataTypes.STRING,
-    age: Sequelize.DataTypes.INTEGER,
     email: Sequelize.DataTypes.STRING,
     mobile: Sequelize.DataTypes.STRING,
     address: Sequelize.DataTypes.STRING,
     city: Sequelize.DataTypes.STRING,
     zip: Sequelize.DataTypes.STRING,
     country: Sequelize.DataTypes.STRING,
-    // profilepicture: Sequelize.DataTypes.BLOB,
-    // aboutme: Sequelize.DataTypes.TEXT,
-    // certificates: Sequelize.DataTypes.BLOB,
-    // skills: Sequelize.DataTypes.TEXT,
-    // resume: Sequelize.DataTypes.BLOB,
+    profilepicture: Sequelize.DataTypes.TEXT,
+    skills: Sequelize.DataTypes.TEXT,
+    resume: Sequelize.DataTypes.TEXT,
     password: Sequelize.DataTypes.STRING,
   },
   {
@@ -37,7 +32,6 @@ const User = db.define(
 
 User.associate = (models) => {
   User.hasOne(ProfileUser);
-  // User.hasMany(RefToken);
   User.hasMany(JobApplication);
 };
 

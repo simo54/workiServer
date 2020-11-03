@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const Employer = require("./Employer");
 
 const EmployerRefToken = db.define(
   "employersessions",

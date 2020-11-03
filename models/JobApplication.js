@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const Job = require("./Job");
 
 const JobApplication = db.define(
   "jobapplications",

@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT || 5000;
 const cors = require("cors");
 const app = express();
-
+const path = require("path");
 // User and Employer Login
 const userlogin = require("../authentication/userLoginAuth");
 const employerlogin = require("../authentication/employerLoginAuth");
@@ -16,7 +16,7 @@ const employerController = require("../routes/employerRoute");
 const jobsController = require("../routes/jobsRoute");
 // Controllers
 
-// Prevent cors-error from local client-server requests
+// ======= Prevent cors-error from local client-server requests
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -27,8 +27,9 @@ app.use(
     credentials: true,
   })
 );
-// Prevent cors-error from local client-server requests
+// ======= Prevent cors-error from local client-server requests
 
+// Format json requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -41,6 +42,7 @@ app.use("/jobs", jobsController);
 app.post("/login/user", userlogin);
 app.post("/login/useremployer", employerlogin);
 
+// Server listening
 app.listen(port, () => {
   console.log("Server running on port " + port);
 });

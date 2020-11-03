@@ -1,7 +1,8 @@
+const path = require("path");
 const JobApplication = require("../models/JobApplication");
 
 const controller = {
-  getJobsApplications: async (req, res) => {
+  getJobsApplications: (req, res) => {
     const { id } = req.params;
     JobApplication.findAll({ where: { jobref: req.params.id } })
       .then((results) => {
@@ -10,6 +11,15 @@ const controller = {
       })
       .catch((err) => console.log(err));
   },
+
+  getResumeFromApplication: async (req, res) => {
+    const { id, jobref } = req.params;
+    const result = await JobApplication.findOne({
+      where: { userid: req.params.id, jobref: req.params.jobref },
+    });
+    res.sendFile(path.join(__dirname, `../public/files/${result.resume}`));
+  },
+
   newJobApplication: async (req, res) => {
     const {
       firstname,
@@ -25,35 +35,6 @@ const controller = {
       userid,
       jobref,
     } = req.body;
-    console.log(
-      firstname,
-      lastname,
-      middlename,
-      email,
-      mobile,
-      city,
-      zip,
-      country,
-      coverletter,
-      resume,
-      userid,
-      jobref
-    );
-    // if (
-    //   !firstname ||
-    //   !lastname ||
-    //   !email ||
-    //   !mobile ||
-    //   !city ||
-    //   !zip ||
-    //   !country ||
-    //   !coverletter ||
-    //   !resume
-    // ) {
-    //   res.sendStatus(400);
-    //   console.log("something is wrong here");
-    //   return;
-    // }
     try {
       await JobApplication.create({
         firstname,
@@ -79,70 +60,3 @@ const controller = {
 };
 
 module.exports = controller;
-
-// const JobApplication = require("../models/JobApplication");
-
-// const controller = {
-//   getJobsApplications: async (req, res) => {
-//     const { id } = req.params;
-//     JobApplication.findAll({ where: { companyid: req.params.id } })
-//       .then((results) => {
-//         res.send(results);
-//         res.sendStatus(200);
-//         return;
-//       })
-//       .catch((err) => console.log(err));
-//   },
-//   newJobApplication: async (req, res) => {
-//     const {
-//       firstname,
-//       lastname,
-//       middlename,
-//       email,
-//       mobile,
-//       city,
-//       zip,
-//       country,
-//       coverletter,
-//       resume,
-//       userid,
-//     } = req.body;
-//     // if (
-//     //   !firstname ||
-//     //   !lastname ||
-//     //   !email ||
-//     //   !mobile ||
-//     //   !city ||
-//     //   !zip ||
-//     //   !country ||
-//     //   !coverletter ||
-//     //   !resume
-//     // ) {
-//     //   res.sendStatus(400);
-//     //   console.log("something is wrong here");
-//     //   return;
-//     // }
-//     try {
-//       await JobApplication.create({
-//         firstname,
-//         lastname,
-//         middlename,
-//         email,
-//         mobile,
-//         city,
-//         zip,
-//         country,
-//         coverletter,
-//         resume,
-//         userid,
-//       });
-//       res.sendStatus(200);
-//       return;
-//     } catch (e) {
-//       res.sendStatus(500);
-//       return;
-//     }
-//   },
-// };
-
-// module.exports = controller;

@@ -1,4 +1,17 @@
 const bcrypt = require("bcrypt");
+const path = require("path");
+const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "../public/files"),
+  filename: function (req, file, cb) {
+    console.log(file.detectedFileExtension);
+    cb(null, uuidv4() + ".pdf");
+  },
+});
+const upload = multer({ storage: storage }).single("file");
+
 const User = require("../models/User");
 
 const controller = {
@@ -9,15 +22,12 @@ const controller = {
     })
       .then((results) => {
         res.send(results);
-        // res.sendStatus(200);
         return;
       })
       .catch((err) => console.log(err));
   },
   getUsers: async (req, res) => {
-    await User.findAll({
-      // include: db.RefToken,
-    })
+    await User.findAll({})
       .then((results) => {
         res.send(results);
         return;
@@ -40,7 +50,6 @@ const controller = {
     } = req.body;
     if (!firstname || !lastname || !email || !zip || !country || !password) {
       res.sendStatus(400);
-      console.log("something is wrong here");
       return;
     }
     try {
@@ -65,6 +74,89 @@ const controller = {
       res.sendStatus(500);
       return;
     }
+  },
+  updateUser: async (req, res) => {
+    console.log("Beginning of updateUser");
+    const { id } = req.params;
+    const {
+      firstname,
+      lastname,
+      middlename,
+      email,
+      mobile,
+      address,
+      city,
+      zip,
+      country,
+    } = req.body;
+    await User.update(
+      {
+        firstname,
+        lastname,
+        middlename,
+        email,
+        mobile,
+        address,
+        city,
+        zip,
+        country,
+      },
+      { where: { id: req.params.id } }
+    )
+      .then((results) => {
+        res.send(results);
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+        return;
+      });
+  },
+  updateUserResume: (req, res) => {
+    console.log(" ==== Beginning of updateUserResume");
+    const { id } = req.params;
+    upload(req, res, (err) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("Something went wrong!");
+      }
+      User.update(
+        {
+          profilepicture: req.file.filename,
+        },
+        { where: { id: req.params.id } }
+      )
+        .then((req) => {
+          res.send(req.file);
+          return;
+        })
+        .catch((err) => console.log(err));
+      res.send(req.file);
+    });
+  },
+  updateProfilePicture: (req, res) => {
+    console.log(" ==== Beginning of updateUserResume");
+    const { id } = req.params;
+    console.log(id);
+    upload(req, res, (err) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("Something went wrong!");
+      }
+
+      // User.update(
+      //   {
+      //     resume: req.file.filename,
+      //   },
+      //   { where: { id: req.params.id } }
+      // )
+      //   .then((req) => {
+      //     res.send(req.file);
+      //     return;
+      //   })
+      //   .catch((err) => console.log(err));
+      // res.send(req.file);
+    });
   },
 };
 

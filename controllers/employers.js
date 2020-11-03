@@ -69,6 +69,48 @@ const controller = {
       return;
     }
   },
+  updateEmployer: async (req, res) => {
+    console.log("Beginning of updateUser");
+    const { id } = req.params;
+    const {
+      companyname,
+      firstname,
+      lastname,
+      middlename,
+      logo,
+      email,
+      mobile,
+      address,
+      city,
+      zip,
+      aboutus,
+      country,
+      companysize,
+    } = req.body;
+    await Employer.update(
+      {
+        companyname,
+        firstname,
+        lastname,
+        middlename,
+        logo,
+        email,
+        mobile,
+        address,
+        city,
+        zip,
+        aboutus,
+        country,
+        companysize,
+      },
+      { where: { id: req.params.id } }
+    )
+      .then((results) => {
+        res.send(results);
+        return;
+      })
+      .catch((err) => console.log(err));
+  },
 };
 
 module.exports = controller;

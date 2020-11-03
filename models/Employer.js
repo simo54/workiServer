@@ -2,7 +2,6 @@ const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 const EmployerRefToken = require("./EmployerRefreshToken");
 const Job = require("./Job");
-const ProfileEmployer = require("./EmployerProfile");
 
 const Employer = db.define(
   "employers",
@@ -17,7 +16,7 @@ const Employer = db.define(
     firstname: Sequelize.DataTypes.STRING,
     lastname: Sequelize.DataTypes.STRING,
     middlename: Sequelize.DataTypes.STRING,
-    logo: Sequelize.DataTypes.BLOB("long"),
+    logo: Sequelize.DataTypes.TEXT,
     email: Sequelize.DataTypes.STRING,
     mobile: Sequelize.DataTypes.STRING,
     address: Sequelize.DataTypes.STRING,
@@ -25,6 +24,7 @@ const Employer = db.define(
     zip: Sequelize.DataTypes.STRING,
     country: Sequelize.DataTypes.STRING,
     companysize: Sequelize.DataTypes.STRING,
+    aboutus: Sequelize.DataTypes.TEXT,
     password: Sequelize.DataTypes.STRING,
   },
   {

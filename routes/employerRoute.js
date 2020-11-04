@@ -19,5 +19,7 @@ route.get(
 
 route.put("/:id/updateinfo", employer_controller.updateEmployer);
 route.get("/:id", employer_controller.getEmployerById);
+route.put("/:id/logo", employer_controller.updateLogo);
+route.get("/:id/getlogo", employer_controller.getLogo);
 
 module.exports = route;

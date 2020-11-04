@@ -11,7 +11,6 @@ const controller = {
       })
       .catch((err) => console.log(err));
   },
-
   getResumeFromApplication: async (req, res) => {
     const { id, jobref } = req.params;
     const result = await JobApplication.findOne({
@@ -19,7 +18,6 @@ const controller = {
     });
     res.sendFile(path.join(__dirname, `../public/files/${result.resume}`));
   },
-
   newJobApplication: async (req, res) => {
     const {
       firstname,

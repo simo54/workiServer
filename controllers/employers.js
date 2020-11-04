@@ -1,4 +1,22 @@
 const bcrypt = require("bcrypt");
+const path = require("path");
+const multer = require("multer");
+const { v4: uuidv4 } = require("uuid");
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "../public/files"),
+  filename: function (req, file, cb) {
+    if (file.mimetype === "application/pdf") {
+      console.log("PDF");
+      cb(null, uuidv4() + ".pdf");
+    }
+    if (file.mimetype === "image/jpeg") {
+      console.log("JPEG");
+      cb(null, uuidv4() + ".jpeg");
+    }
+  },
+});
+const upload = multer({ storage: storage }).single("file");
+
 const Employer = require("../models/Employer");
 
 const controller = {
@@ -110,6 +128,35 @@ const controller = {
         return;
       })
       .catch((err) => console.log(err));
+  },
+  updateLogo: (req, res) => {
+    console.log(" ==== Beginning of updateLogo");
+    const { id } = req.params;
+    upload(req, res, (err) => {
+      if (err) {
+        res.status(400).send("Something went wrong!");
+      }
+      Employer.update(
+        {
+          logo: req.file.filename,
+        },
+        { where: { id: req.params.id } }
+      )
+        .then((req) => {
+          res.send(req.file);
+          return;
+        })
+        .catch((err) => console.log(err));
+      res.send(req.file);
+    });
+  },
+  getLogo: async (req, res) => {
+    const { id } = req.params;
+    const result = await Employer.findOne({
+      where: { id: req.params.id },
+    });
+    console.log("CHECKTHISHSIFEH" + result);
+    res.sendFile(path.join(__dirname, `../public/files/${result.logo}`));
   },
 };
 

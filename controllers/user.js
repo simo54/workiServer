@@ -2,12 +2,17 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
-
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/files"),
   filename: function (req, file, cb) {
-    console.log(file.detectedFileExtension);
-    cb(null, uuidv4() + ".pdf");
+    if (file.mimetype === "application/pdf") {
+      console.log("PDF");
+      cb(null, uuidv4() + ".pdf");
+    }
+    if (file.mimetype === "image/jpeg") {
+      console.log("JPEG");
+      cb(null, uuidv4() + ".jpeg");
+    }
   },
 });
 const upload = multer({ storage: storage }).single("file");
@@ -122,7 +127,7 @@ const controller = {
       }
       User.update(
         {
-          profilepicture: req.file.filename,
+          resume: req.file.filename,
         },
         { where: { id: req.params.id } }
       )
@@ -137,26 +142,40 @@ const controller = {
   updateProfilePicture: (req, res) => {
     console.log(" ==== Beginning of updateUserResume");
     const { id } = req.params;
-    console.log(id);
     upload(req, res, (err) => {
       if (err) {
         console.log(err);
         res.status(400).send("Something went wrong!");
       }
-
-      // User.update(
-      //   {
-      //     resume: req.file.filename,
-      //   },
-      //   { where: { id: req.params.id } }
-      // )
-      //   .then((req) => {
-      //     res.send(req.file);
-      //     return;
-      //   })
-      //   .catch((err) => console.log(err));
-      // res.send(req.file);
+      User.update(
+        {
+          profilepicture: req.file.filename,
+        },
+        { where: { id: req.params.id } }
+      )
+        .then((req) => {
+          res.send(req.file);
+          return;
+        })
+        .catch((err) => console.log(err));
+      res.send(req.file);
     });
+  },
+  getProfilePicture: async (req, res) => {
+    const { id } = req.params;
+    const result = await User.findOne({
+      where: { id: req.params.id },
+    });
+    res.sendFile(
+      path.join(__dirname, `../public/files/${result.profilepicture}`)
+    );
+  },
+  getResume: async (req, res) => {
+    const { id } = req.params;
+    const result = await User.findOne({
+      where: { id: req.params.id },
+    });
+    res.sendFile(path.join(__dirname, `../public/files/${result.resume}`));
   },
 };
 

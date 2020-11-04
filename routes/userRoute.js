@@ -1,17 +1,6 @@
 const express = require("express");
 const route = express.Router();
 
-// ========================
-// const multer = require("multer");
-// const storage = multer.diskStorage({
-//   destination: path.join(__dirname, "../public/files/"),
-//   filename: function (req, file, cb) {
-//     cb(null, file.originalname);
-//   },
-// });
-// const upload = multer({ storage: storage }).single("resume");
-// ========================
-
 const user_controller = require("../controllers/user");
 const jobapplication_controller = require("../controllers/jobapplications");
 const verifyAuthUser = require("../authentication/verifyAuthUser");
@@ -28,6 +17,10 @@ route.get("/:id", user_controller.getUserById);
 route.put("/:id/updateinfo", user_controller.updateUser);
 route.put("/:id/resume", user_controller.updateUserResume);
 route.put("/:id/profilepicture", user_controller.updateProfilePicture);
+route.get("/:id/getprofilepicture", user_controller.getProfilePicture);
+
+// Get resume
+route.get("/:id/getresume", user_controller.getResume);
 
 // Route for applying for job
 route.post("/newjobapplication", jobapplication_controller.newJobApplication);

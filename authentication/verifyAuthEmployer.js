@@ -7,6 +7,7 @@ const EmployerToken = require("../models/EmployerRefreshToken");
 
 module.exports = async (req, res) => {
   const cookies = cookie.parse(req.headers.cookie || "");
+  console.log("These are good cookies: " + cookies);
 
   try {
     const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
@@ -23,8 +24,6 @@ module.exports = async (req, res) => {
     } else {
       console.log("MATCH WITH EMPLOYER!");
     }
-
-    // throw "error"
 
     if (at_validity) {
       console.log("EMPLOYER TOKEN HAS BEEN VERIFIED");

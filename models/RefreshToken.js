@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
-const User = require("./User");
 
 const RefToken = db.define(
   "sessions",

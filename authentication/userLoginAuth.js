@@ -28,8 +28,6 @@ module.exports = async (req, res, next) => {
       return;
     }
 
-    // Account found, moving to next
-
     // Check if password match
     const passwordMatch = await bcrypt.compare(password, result.password);
 
@@ -38,8 +36,6 @@ module.exports = async (req, res, next) => {
       res.sendStatus(400);
       return;
     }
-
-    // Account found and password match, next
 
     // Generate access token - JWT
     const access_token = jwt.sign(

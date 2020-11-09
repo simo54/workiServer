@@ -2,10 +2,10 @@ require("dotenv").config();
 require("./dbConfig");
 const express = require("express");
 const bodyParser = require("body-parser");
-const port = process.env.PORT || 5000;
+const port = 5000;
 const cors = require("cors");
 const app = express();
-const path = require("path");
+
 // User and Employer Login
 const userlogin = require("../authentication/userLoginAuth");
 const employerlogin = require("../authentication/employerLoginAuth");

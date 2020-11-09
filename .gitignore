@@ -8,8 +8,6 @@
 # testing
 /coverage
 
-/.vscode
-
 files/
 
 # production

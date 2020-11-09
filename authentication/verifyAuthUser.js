@@ -33,7 +33,6 @@ module.exports = async (req, res) => {
   } catch (e) {
     console.log("Catch of verifyAuthUser.js: " + e);
     if (!cookies.refresh_token) {
-      console.log("USER TOKEN NOT VERIFIED 23");
       res.status(401).json({
         isAuthenticated: false,
       });
@@ -45,7 +44,6 @@ module.exports = async (req, res) => {
       },
     });
     if (!result) {
-      console.log("USER TOKEN NOT VERIFIED 35");
       res.sendStatus(401).json({ isAuthenticated: false });
       return;
     }

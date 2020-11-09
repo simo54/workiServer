@@ -6,11 +6,9 @@ const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/files"),
   filename: function (req, file, cb) {
     if (file.mimetype === "application/pdf") {
-      console.log("PDF");
       cb(null, uuidv4() + ".pdf");
     }
     if (file.mimetype === "image/jpeg") {
-      console.log("JPEG");
       cb(null, uuidv4() + ".jpeg");
     }
   },
@@ -81,7 +79,6 @@ const controller = {
     }
   },
   updateUser: async (req, res) => {
-    console.log("Beginning of updateUser");
     const { id } = req.params;
     const {
       firstname,
@@ -118,7 +115,6 @@ const controller = {
       });
   },
   updateUserResume: (req, res) => {
-    console.log(" ==== Beginning of updateUserResume");
     const { id } = req.params;
     upload(req, res, (err) => {
       if (err) {
@@ -140,7 +136,6 @@ const controller = {
     });
   },
   updateProfilePicture: (req, res) => {
-    console.log(" ==== Beginning of updateUserResume");
     const { id } = req.params;
     upload(req, res, (err) => {
       if (err) {

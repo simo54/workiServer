@@ -6,11 +6,9 @@ const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/files"),
   filename: function (req, file, cb) {
     if (file.mimetype === "application/pdf") {
-      console.log("PDF");
       cb(null, uuidv4() + ".pdf");
     }
     if (file.mimetype === "image/jpeg") {
-      console.log("JPEG");
       cb(null, uuidv4() + ".jpeg");
     }
   },
@@ -21,7 +19,6 @@ const Employer = require("../models/Employer");
 
 const controller = {
   getEmployer: async (req, res, next) => {
-    console.log("beginning of employer");
     await Employer.findAll()
       .then((results) => {
         res.send(results);
@@ -30,7 +27,6 @@ const controller = {
       .catch((err) => console.log(err));
   },
   getEmployerById: async (req, res, next) => {
-    console.log("beginning of getEmployerById");
     const { id } = req.params;
     await Employer.findOne({
       where: { id: req.params.id },
@@ -42,7 +38,6 @@ const controller = {
       .catch((err) => console.log(err));
   },
   createEmployer: async (req, res, next) => {
-    console.log("beginning of createEmployer");
     const {
       companyname,
       firstname,
@@ -88,7 +83,6 @@ const controller = {
     }
   },
   updateEmployer: async (req, res) => {
-    console.log("Beginning of updateUser");
     const { id } = req.params;
     const {
       companyname,
@@ -130,7 +124,6 @@ const controller = {
       .catch((err) => console.log(err));
   },
   updateLogo: (req, res) => {
-    console.log(" ==== Beginning of updateLogo");
     const { id } = req.params;
     upload(req, res, (err) => {
       if (err) {
@@ -155,7 +148,6 @@ const controller = {
     const result = await Employer.findOne({
       where: { id: req.params.id },
     });
-    console.log("CHECKTHISHSIFEH" + result);
     res.sendFile(path.join(__dirname, `../public/files/${result.logo}`));
   },
 };

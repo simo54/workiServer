@@ -20,7 +20,8 @@ const jobsController = require("../routes/jobsRoute");
 app.use(
   cors({
     // origin: "http://localhost:3000",
-    origin: "https://workiforpeople.herokuapp.com",
+    // origin: "https://workiforpeople.herokuapp.com",
+    origin: "https://worki.netlify.app",
     methods: "GET, POST, PUT, DELETE, HEAD",
     allowHeaders: "Origin, X-Requested-With, Content-Type, Accept",
     exposedHeaders: "Content-Range,X-Content-Range",

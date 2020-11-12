@@ -6,6 +6,10 @@ const port = process.env.PORT || 5000;
 const cors = require("cors");
 const app = express();
 
+// Format json requests
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 // User and Employer Login
 const userlogin = require("../authentication/userLoginAuth");
 const employerlogin = require("../authentication/employerLoginAuth");
@@ -14,26 +18,20 @@ const employerlogin = require("../authentication/employerLoginAuth");
 const userController = require("../routes/userRoute");
 const employerController = require("../routes/employerRoute");
 const jobsController = require("../routes/jobsRoute");
-// Controllers
 
 // ======= Prevent cors-error from local client-server requests
 app.use(
   cors({
     // origin: "http://localhost:3000",
-    // origin: "https://workiforpeople.herokuapp.com",
-    origin: "https://worki.netlify.app",
+    origin: "https://workiforpeople.herokuapp.com",
     methods: "GET, POST, PUT, DELETE, HEAD",
-    allowHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+    allowHeaders:
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
     exposedHeaders: "Content-Range,X-Content-Range",
     preflightContinue: true,
     credentials: true,
   })
 );
-// ======= Prevent cors-error from local client-server requests
-
-// Format json requests
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 // Routing
 app.use("/user", userController);

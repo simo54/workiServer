@@ -1,3 +1,4 @@
+// User Session model, the model we use when user login and where we pass jwt token, session token and user id inside the table
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 
@@ -12,9 +13,5 @@ const EmployerRefToken = db.define(
     timestamps: false,
   }
 );
-
-// EmployerRefToken.associate = (models) => {
-//     EmployerRefToken.belongsTo(Employer);
-// };
 
 module.exports = EmployerRefToken;

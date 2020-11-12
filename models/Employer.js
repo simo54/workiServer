@@ -1,3 +1,4 @@
+// User model, the model we use when creating a new employer on frontend signup
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 const EmployerRefToken = require("./EmployerRefreshToken");

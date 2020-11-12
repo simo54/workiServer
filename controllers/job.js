@@ -1,3 +1,4 @@
+// Job controller, where employer can create a new job, and where we can fetch the complete list of jobs from /jobs
 const Job = require("../models/Job");
 
 const controller = {

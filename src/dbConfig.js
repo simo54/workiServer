@@ -1,3 +1,4 @@
+// Configuration of the database connection to elephantsql
 const { Sequelize } = require("sequelize");
 
 const db = new Sequelize(process.env.DATABASE_URL, {

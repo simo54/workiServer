@@ -1,3 +1,4 @@
+// Job Application model, where user submit its data that will be accessible to the employer
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 
@@ -21,8 +22,5 @@ const JobApplication = db.define(
     timestamps: false,
   }
 );
-
-// Job.belongsToMany(JobApplication, { through: JobsApplications });
-// JobApplication.belongsToMany(Job, { through: JobsApplications });
 
 module.exports = JobApplication;

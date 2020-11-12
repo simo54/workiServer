@@ -1,3 +1,4 @@
+// Job application controller, where user can create an application, and where employer can retrieve applications and user's pdf
 const path = require("path");
 const JobApplication = require("../models/JobApplication");
 

@@ -1,3 +1,4 @@
+// Model Job
 const Sequelize = require("sequelize");
 const db = require("../src/dbConfig");
 

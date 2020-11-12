@@ -1,7 +1,9 @@
+// User controller page,
 const bcrypt = require("bcrypt");
 const path = require("path");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
+// We define where our files will be stored
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "../public/files"),
   filename: function (req, file, cb) {
@@ -13,6 +15,7 @@ const storage = multer.diskStorage({
     }
   },
 });
+// Declaring possiblity of upload only 1 file per time
 const upload = multer({ storage: storage }).single("file");
 
 const User = require("../models/User");

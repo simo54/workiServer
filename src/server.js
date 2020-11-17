@@ -22,8 +22,8 @@ const jobsController = require("../routes/jobsRoute");
 // ======= Prevent cors-error from local client-server requests
 app.use(
   cors({
-    // origin: "http://localhost:3000",
-    origin: "https://workiforpeople.herokuapp.com",
+    origin: "http://localhost:3000",
+    // origin: "https://workiforpeople.herokuapp.com",
     methods: "GET, POST, PUT, DELETE, HEAD",
     allowHeaders:
       "Origin, X-Requested-With, Content-Type, Accept, Authorization",

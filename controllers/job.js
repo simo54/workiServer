@@ -59,7 +59,6 @@ const controller = {
       res.sendStatus(200);
       return;
     } catch (e) {
-      console.log(e);
       res.sendStatus(500);
       return;
     }

@@ -6,13 +6,9 @@ const Usertoken = require("../models/RefreshToken");
 
 module.exports = async (req, res) => {
   const cookies = cookie.parse(req.headers.cookie || "");
-  console.log("These are good cookies: " + cookies);
 
   try {
     const at_validity = jwt.verify(cookies.access_token, process.env.PRIV_KEY);
-    console.log("atvalidity: " + at_validity);
-    console.log("tokenvalue: " + tokenvalue);
-    console.log("userid: " + user_id);
 
     const checkIfUser = await Usertoken.findOne({
       where: {
@@ -21,15 +17,11 @@ module.exports = async (req, res) => {
       },
     });
 
-    console.log("CheckifUser : " + checkIfUser);
-
     if (!checkIfUser) {
-      throw "NO MATCH WITH USER";
+      throw " ";
     } else {
-      console.log("MATCH WITH USER!");
+      console.log("Match");
     }
-
-    console.log("atvalidity: " + at_validity);
 
     if (at_validity) {
       console.log("USER TOKEN HAS BEEN VERIFIED");
@@ -40,8 +32,6 @@ module.exports = async (req, res) => {
     }
   } catch (e) {
     console.log("Catch of verifyAuthUser.js 42: " + e);
-
-    console.log(cookies.refresh_token);
 
     if (!cookies.refresh_token) {
       res.status(401).json({
@@ -56,7 +46,6 @@ module.exports = async (req, res) => {
       },
     });
 
-    console.log("result is: " + result);
     if (!result) {
       res.sendStatus(401).json({ isAuthenticated: false });
       return;
@@ -82,6 +71,5 @@ module.exports = async (req, res) => {
     res.cookie("refresh_token", String(refresh_token), { httpOnly: true });
     res.status(200).json({ isAuthenticated: true, user_id: result.user_id });
     return;
-    // res.status(200).json({ isAuthenticated: true, user_id: result.user_id });
   }
 };
